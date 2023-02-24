@@ -3,6 +3,10 @@
   margin: 0;
   box-sizing: border-box;
 }
+:root
+{
+  --width :135px;
+}
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -11,7 +15,7 @@ body {
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  margin: 20px 70px;
+  margin: 20px 10px;
   flex-wrap: wrap;
   gap: 20px;
   font-weight: 500;
@@ -83,20 +87,20 @@ body {
   display: flex;
   margin: 20px auto;
   flex-wrap: wrap;
-  padding: 0 60px;
+  padding: 0 450px;
   justify-content: center;
   gap: 10px;
 }
 .container img {
-  width: 130px;
+  width: 100%;
   background-color: #324452;
 }
 .container .box {
   position: relative;
   transform-style: preserve-3d;
-  border: 3px solid rgb(25, 117, 255);
-  width: 135px;
-  height: 135px;
+  border: 4px solid rgb(25, 117, 255);
+  width: var(--width);
+  height: var(--width);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -116,8 +120,8 @@ body {
 }
 .container .box div {
   position: absolute;
-  width: 100%;
-  height: 100%;
+ width:100%;
+ height:100%;
 }
 
 .container .box .back {
@@ -159,4 +163,39 @@ body {
   width: fit-content;
   user-select: none;
   cursor: pointer;
+}
+@media (max-width:1500px) {
+  .container{
+    padding: 0 300px;
+  }
+  
+}
+@media (max-width:1200px) {
+  .container{
+    padding: 0 230px;
+  }
+  
+}
+@media (max-width:1000px) {
+  .container{
+    padding: 0 130px;
+  }
+  
+}
+@media (max-width:850px) {
+  .container{
+    padding: 0 50px;
+  }
+  
+}
+@media (max-width:700px) {
+  .container{
+    padding: 0 0px;
+    
+  }
+  :root
+  {
+    --width :80px;
+  }
+  
 }
