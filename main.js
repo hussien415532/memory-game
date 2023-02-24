@@ -24,14 +24,13 @@ start.addEventListener("click", () => {
   backgroundMusic.play();
   backgroundMusic.volume = 0.4;
   start.parentElement.remove();
-  timer(2);
+  timer(3);
   wrong.innerHTML = 0;
-  score.innerHTML =0;
-  boxes.forEach(box=>
-    {
-      box.classList.remove('match')
-      box.classList.remove('flip')
-    })
+  score.innerHTML = 0;
+  boxes.forEach((box) => {
+    box.classList.remove("match");
+    box.classList.remove("flip");
+  });
 });
 
 shuffle(shuffleArray);
@@ -62,6 +61,7 @@ function checkMatch(boxOne, boxTwo) {
     correctAnswer.play();
     score.innerHTML = Number(score.innerHTML) + 2;
     if (score.innerHTML == 20) {
+      clearInterval(inte);
       setTimeout(() => {
         backgroundMusic.pause();
       }, 2000);
@@ -93,11 +93,12 @@ function shuffle(array) {
   }
   return array;
 }
+let inte;
 function timer(minute) {
   let minutes;
   let secs;
   let timinsec = minute * 60;
-  let st = setInterval(() => {
+  inte = setInterval(() => {
     minutes = Math.trunc(timinsec / 60);
     secs = timinsec % 60;
 
@@ -107,19 +108,15 @@ function timer(minute) {
     time.innerHTML = `${minutes}:${secs}`;
     timinsec--;
     if (timinsec < 0) {
-      clearInterval(st);
-      container.insertAdjacentHTML("afterend",popUp);
+      clearInterval(inte);
+      container.insertAdjacentHTML("afterend", popUp);
       backgroundMusic.pause();
-      let re = document.querySelector('.re');
-      re.addEventListener('click',reload)
+      let re = document.querySelector(".re");
+      re.addEventListener("click", reload);
     }
   }, 1000);
 }
-function reload()
-{
-  document.querySelector('.game-over').remove();
-       document.body.appendChild(start.parentElement);
-
-  
-
+function reload() {
+  document.querySelector(".game-over").remove();
+  document.body.appendChild(start.parentElement);
 }
