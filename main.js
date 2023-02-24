@@ -1,0 +1,125 @@
+let start = document.querySelector(".start div");
+let correctAnswer = new Audio("audio/Correct Answer Sound Effect.mp3");
+let wrongAnswer = new Audio("audio/Wrong Answer - Sound Effect [HD].mp3");
+let backgroundMusic = new Audio(
+  "audio/Elevator Music (Kevin MacLeod) - Gaming Background Music (HD).mp3"
+);
+let popUp = `<div class="game-over">
+      <div class="pop-up">
+          <p>Game Over</p>
+          <div class="re">
+              <span class="material-symbols-outlined">
+                  refresh
+              </span>
+          </div>
+      </div>
+  </div>`;
+let score = document.querySelector(".score span");
+let time = document.querySelector(".time span");
+let wrong = document.querySelector(".wrong span");
+let container = document.querySelector(".container");
+let boxes = [...container.children];
+let shuffleArray = [...boxes.keys()];
+start.addEventListener("click", () => {
+  backgroundMusic.play();
+  backgroundMusic.volume = 0.4;
+  start.parentElement.remove();
+  timer(2);
+  wrong.innerHTML = 0;
+  score.innerHTML =0;
+  boxes.forEach(box=>
+    {
+      box.classList.remove('match')
+      box.classList.remove('flip')
+    })
+});
+
+shuffle(shuffleArray);
+boxes.forEach((box, index) => {
+  box.style.order = shuffleArray[index];
+  box.addEventListener("click", () => {
+    flipBox(box);
+  });
+});
+function flipBox(box) {
+  box.classList.add("flip");
+  let allFlipped = boxes.filter((box) => {
+    return box.classList.contains("flip");
+  });
+  if (allFlipped.length == 2) {
+    stopClick();
+    checkMatch(allFlipped[0], allFlipped[1]);
+  }
+}
+function stopClick() {
+  container.style.pointerEvents = "none";
+  setTimeout(() => {
+    container.style.pointerEvents = "all";
+  }, 1000);
+}
+function checkMatch(boxOne, boxTwo) {
+  if (boxOne.getAttribute("data-att") == boxTwo.getAttribute("data-att")) {
+    correctAnswer.play();
+    score.innerHTML = Number(score.innerHTML) + 2;
+    if (score.innerHTML == 20) {
+      setTimeout(() => {
+        backgroundMusic.pause();
+      }, 2000);
+      wrongAnswer.remove();
+      correctAnswer.remove();
+    }
+    boxOne.classList.add("match");
+    boxTwo.classList.add("match");
+    boxOne.classList.remove("flip");
+    boxTwo.classList.remove("flip");
+  } else {
+    wrongAnswer.play();
+    wrongAnswer.volume = 0.1;
+    wrong.innerHTML = Number(wrong.innerHTML) + 1;
+
+    setTimeout(() => {
+      boxOne.classList.remove("flip");
+      boxTwo.classList.remove("flip");
+    }, 1000);
+  }
+}
+function shuffle(array) {
+  let random,
+    arrLength = array.length;
+  while (arrLength > 0) {
+    arrLength--;
+    random = Math.floor(Math.random() * array.length);
+    [array[arrLength], array[random]] = [array[random], array[arrLength]];
+  }
+  return array;
+}
+function timer(minute) {
+  let minutes;
+  let secs;
+  let timinsec = minute * 60;
+  let st = setInterval(() => {
+    minutes = Math.trunc(timinsec / 60);
+    secs = timinsec % 60;
+
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+    secs = secs < 10 ? `0${secs}` : secs;
+
+    time.innerHTML = `${minutes}:${secs}`;
+    timinsec--;
+    if (timinsec < 0) {
+      clearInterval(st);
+      container.insertAdjacentHTML("afterend",popUp);
+      backgroundMusic.pause();
+      let re = document.querySelector('.re');
+      re.addEventListener('click',reload)
+    }
+  }, 1000);
+}
+function reload()
+{
+  document.querySelector('.game-over').remove();
+       document.body.appendChild(start.parentElement);
+
+  
+
+}
