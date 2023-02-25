@@ -14,17 +14,28 @@ let popUp = `<div class="game-over">
           </div>
       </div>
   </div>`;
+let newGame = `<div class="new-game">
+  <div class="pop-up">
+      <p>You Win!</p>
+      <div class="new">
+      <span class="material-symbols-outlined">
+      fiber_new
+      </span>
+      </div>
+  </div>
+</div>`;
 let score = document.querySelector(".score span");
 let time = document.querySelector(".time span");
 let wrong = document.querySelector(".wrong span");
 let container = document.querySelector(".container");
 let boxes = [...container.children];
 let shuffleArray = [...boxes.keys()];
+let targerTime = 2;
 start.addEventListener("click", () => {
   backgroundMusic.play();
   backgroundMusic.volume = 0.4;
   start.parentElement.remove();
-  timer(3);
+  timer(targerTime);
   wrong.innerHTML = 0;
   score.innerHTML = 0;
   boxes.forEach((box) => {
@@ -65,8 +76,12 @@ function checkMatch(boxOne, boxTwo) {
       setTimeout(() => {
         backgroundMusic.pause();
       }, 2000);
-      wrongAnswer.remove();
-      correctAnswer.remove();
+      container.style.pointerEvents = "none";
+      container.insertAdjacentHTML("afterend", newGame);
+      let re = document.querySelector(".new");
+      re.addEventListener("click", newgame);
+
+      return 0;
     }
     boxOne.classList.add("match");
     boxTwo.classList.add("match");
@@ -119,4 +134,16 @@ function timer(minute) {
 function reload() {
   document.querySelector(".game-over").remove();
   document.body.appendChild(start.parentElement);
+  shuffle(shuffleArray);
+  boxes.forEach((box, index) => {
+    box.style.order = shuffleArray[index];
+  });
+}
+function newgame() {
+  document.querySelector(".new-game").remove();
+  document.body.appendChild(start.parentElement);
+  shuffle(shuffleArray);
+  boxes.forEach((box, index) => {
+    box.style.order = shuffleArray[index];
+  });
 }
